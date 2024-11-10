@@ -1,0 +1,378 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <script type="text/javascript">
+    	// 判断浏览器版本过低
+	    var userAgent = navigator.userAgent;
+	    if ((userAgent.indexOf("MSIE 8.0") != -1 || userAgent.indexOf("MSIE 7.0") != -1) && userAgent.indexOf("compatible") != -1) {
+	    	window.location.href = "upgrade.html";
+	    }
+		
+        // 存在父页面，并且父页面不是当前系统（casLogoutView.jsp中如果不做判断会一直刷新）
+        if (window.top != window.self &&
+            window.top.location.href.indexOf("sso.tju.edu.cn") == -1 &&
+            window.top.location.href.indexOf("/cas") == -1) {
+            window.top.location.reload();
+        }
+        // 初始化默认语言
+        var loginlanaguage = 'zh';
+        var defaultLanguage = Boolean(loginlanaguage) ? (loginlanaguage === 'zh' ? "zh_CN" : "en") : "en";
+        // 初始化根目录
+        var contextPath = '/cas';
+    </script>
+
+
+    <!-- META SECTION -->
+    <title>统一身份认证</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="always" name="referrer">
+    <meta name="theme-color" content="#2932e1">
+    <link rel="icon" href="/comm/tju/image/icon/favicon.ico" type="image/x-icon"/>
+    <!-- END META SECTION -->
+
+    <!-- CSS INCLUDE -->
+    <link rel="stylesheet" type="text/css"
+          href="/comm/tju/css/style/login-style-anr.css?v=2024060604"/>
+    <link rel="stylesheet" type="text/css"
+          href="/comm/tju/css/theme/login-tj-blue-theme.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="/comm/plugin/layui/lay/modules/theme/default/layui.css"/>
+          <link rel="stylesheet" type="text/css" href="/comm/css/camera.css" />
+    <link href="/comm/tju/css/fontawesome/font-awesome.min.css"  rel="stylesheet" type="text/css" />
+   <!-- comm/tju/css/fontawesome/font-awesome.min.css -->
+    <!-- EOF CSS INCLUDE -->
+	<style>
+        html,body {height: 100%;margin: 0;padding: 0;}
+        a {color: #09f;}
+        a:hover {text-decoration: none;}
+        #back_to_camera {background: rgba(255,255,255,.9);clear: both;display: block;height: 40px;line-height: 40px;padding: 20px;position: relative;z-index: 1;}
+        .fluid_container {bottom: 0;height: 100%;left: 0;position: fixed;right: 0;top: 0;z-index: 0;}
+        #camera_wrap_4 {bottom: 0;height: 100%;left: 0;margin-bottom: 0!important;position: fixed;right: 0;top: 0;}
+        .camera_bar {z-index: 2;}
+        .camera_thumbs {margin-top: -100px;position: relative;z-index: 1;}
+        .camera_thumbs_cont {border-radius: 0;-moz-border-radius: 0;-webkit-border-radius: 0;}
+        .camera_overlayer {opacity: .1;}
+    </style>
+</head>
+<body class="fluid_container" id="container_bg">
+<div class="camera_wrap camera_emboss pattern_1" id="camera_wrap_4">
+	                <div data-thumb="/comm/image/tju/login_container_bg_01tju.jpg" data-src="/comm/image/tju/login_container_bg_01tju.jpg"></div>
+			        <div data-thumb="/comm/image/tju/login_container_bg_02tju.jpg" data-src="/comm/image/tju/login_container_bg_02tju.jpg"></div>
+</div>
+<div class="login-outside-container">
+
+    <div id="login-background" class="login-bg-container" style="background-size:cover" >
+        <div class="login-main-part">
+            <div class="login-window-container">
+                <div class="header-theme-element"></div>
+                <div class="login-window-inside">
+                    <div class="background-box" >
+                        <div id="login-background-1" class="background-inside-bg" style="filter:blur(0)"></div>
+                        <div class="background-inside-box"
+                             style="background-color:rgba(3, 53, 23, 0.05);">
+                        </div>
+                    </div>
+                    <div class="login-inside-con" >
+                        <div class="login-container" >
+                            <div class="logo-container-box">
+                                <img class="" src="/comm/tju/image/logo/logo-tj.png"/>
+                            </div>
+                            <div class="login-block-container">
+                                <div class="login-block-tab cl-after">
+                                    <a class="block-tab-item active" id="password_login">
+                                        <img src="/comm/tju/image/icon/login-icon-1.png"/>
+                                        <span>账号登录</span>
+                                    </a>
+                                    <a class="block-tab-item" id="qrcode_login">
+                                        <img src="/comm/tju/image/icon/login-icon-3.png"/>
+                                        <span>扫码登录</span>
+                                    </a>
+                                </div>
+                                <div class="login-tab-details">
+                                    
+                                    <form id="loginForm" class="login-input-row" action="/lyrow.html" method="post">
+                                        <div class="login-input-row" id="loginFormShow">
+                                            <div class="info-input-item cl-after">
+                                                <div class="icon-box">
+                                                    <img src="/comm/tju/image/icon/user-icon-tj.png"/>
+                                                </div>
+                                                <div class="text-box" id="und">
+                                                    <input id="un" type="text" placeholder="用户名"/>
+                                                </div>
+                                            </div>
+                                            <div class="info-input-item cl-after">
+                                                <div class="icon-box">
+                                                    <img src="/comm/tju/image/icon/password-icon-tj.png"/>
+                                                </div>
+                                                <div class="text-box" id="pdd">
+                                                    <input id="pd" type="password" placeholder="密码" value=""/>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="verification-code cl-after" style="display:block;">
+                                                <div class="text-box">
+                                                    <input name="code" id="code" type="text" placeholder="验证码"/>
+                                                </div>
+                                                <div class="verification-code-img">
+                                                    <img id="codeImage" class="login-logo" src="/code.jpg"/>
+                                                </div>
+                                                <div class="verification-ref-btn">
+                                                    <a id="a_changeCode" style="cursor: pointer; color: white;">换一张</a>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="login-btn-row">
+                                                <a class="login-btn" id="index_login_btn">账号登录</a>
+                                            </div>
+                                            <div class="login-option-row">
+                                                <div><input type="checkbox" id="rememberName"/><span>记住账号密码</span>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="pwd" style="text-decoration:none; color:white;" id="pwd_url">忘记密码</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="activate" style="text-decoration:none; color:white;" id="activeBtn">激活账户</a></div>
+                                            </div>
+                                            <div style="font-size: 14px;line-height: 24px; color: #fff;padding: 10px 0 0;">重要提醒：为了满足国家网络安全要求，本系统近期进行了升级。升级后，校编人员的原有账户密码保持不变，可继续使用；新入职人员需要先激活账户后使用；非校编人员，包括劳务派遣人员、外聘教师等，需本部门或业务部门申请后，由本人激活使用。</div>
+                                        </div>
+                                        <input type="hidden" id="rsa" name="rsa"/>
+                                        <input type="hidden" id="ul" name="ul"/>
+                                        <input type="hidden" id="pl" name="pl"/>
+                                        <input type="hidden" id="lt" name="lt" value="LT-1145716-qT7dfPKO5tfWdz4bt0UMVdJ9OJAfUH-cas"/>
+                                        <input type="hidden" name="execution" value="e3s1"/>
+                                        <input type="hidden" name="_eventId" value="submit"/>
+                                        <input type="hidden" id="not_exit_number" value=""/>
+                                        <input type="hidden" id="service_id" value=""/>
+                                        <p style="display:none;">
+                                            
+                                        </p>
+                                    </form>
+                                        
+                                        <p id="unwords" style="display:none">
+                                            请输入用户名
+                                        </p>
+                                        <p id="pdwords" style="display:none">
+                                            请输入密码
+                                        </p>
+                                        <p id="codewords" style="display:none">
+                                            请输入验证码
+                                        </p>
+                                        <p id="scanwords" style="display:none">
+                                            可以扫码登录哟!
+                                        </p>
+                                    
+
+                                    <div class="login-input-row" style="display: none;" id="scanLoginDiv">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="robot-container">
+
+                            <div class="robot-content">
+                                <div class="robot-mag-win" id="robot-msg">
+                                    Hi，你好呀~
+                                </div>
+                                <div class="robot-anm-container">
+                                    
+                                    
+                                </div>
+                            </div>
+
+                            <a class="lang-btn" id="change_language" style="cursor: pointer;">
+                                English
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+       <!--  <div class="alert-info-row sw-btn-con">
+            <div class="sw-btn-box"><a class="left-btn"></a></div>
+            <div class="sw-btn-box"><a class="right-btn"></a></div>
+            <div class="sw-btn-box"><a class="info-btn"></a>
+                <div class="img-info">
+                    <p>图片信息</p>
+                    <p>作者：</p>
+                </div>
+            </div>
+        </div> -->
+
+    </div>
+</div>
+ 
+	<!--Emergency Alert START-->
+<compress:html compressJavaScript="false">
+
+
+	 <!-- START PAGE CONTAINER -->
+   <!--  <div class="page-container menu-mini-open" style="height: 100vh;"> -->
+    
+        <div class="qr-code-box">
+            <div class="white block1" onclick="handleClick()" ><img src="http://f.tju.edu.cn/tp_up/resource/image/up/tj-code-1.png" alt=""></div>
+            <div class="function-box">
+                <div class="minimize">
+                    <i class="fa fa-window-minimize"></i>
+                </div>
+                <div class="close1">
+                    <i class="fa fa-close"></i>
+                </div>
+
+            </div>
+            <div class="code-box block1">
+                <div class="code-tab bg-theme-05">
+                	<div class="tab-item active" onclick="changeTab(0)">App下载</div>
+                    <div class="tab-item "  onclick="changeTab(1)">公众号</div>
+                   
+                </div>
+                <div class="code-container">
+                	<div class="content container-2 active">
+                        <div class="title-box">IOS下载</div>
+                        <div class="img-box">
+                            <img src="http://f.tju.edu.cn/tp_up/resource/image/up/tj-code-3.png" alt="">
+                        </div>
+                        <div class="title-box">安卓下载</div>
+                        <div class="img-box">
+                            <img src="http://f.tju.edu.cn/tp_up/resource/image/up/tj-code-4.png" alt="">
+                        </div>
+                        <div class="prompt">微信扫码后点击右上角“...”在浏览器打开，进行下载 </div>
+                    </div>
+                    <div class="content container-1 ">
+                        <div class="title-box">关注天大办公网</div>
+                        <div class="img-box">
+                            <img src="http://f.tju.edu.cn/tp_up/resource/image/up/tj-code-2.png" alt="">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class=""></div>
+         </div> 
+        <!-- END PAGE CONTENT -->
+  <!--   </div> -->
+ 
+ 
+	<!--Emergency Alert END-->
+</compress:html>
+</body>
+
+<script type="text/javascript" src="/comm/js/jquery.min.js"></script>
+<script type="text/javascript" src="/comm/js/qrcode.js?v=2024060604"></script>
+<script type="text/javascript" src="/comm/js/login-qrcode.js?v=2024060604"></script>
+<script type="text/javascript" src="/comm/js/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="/comm/js/camera.min.js"></script>
+<script type="text/javascript" src="/comm/js/des.js"></script>
+<script type="text/javascript" src="/comm/plugin/captcha/jquery-1.10.3-ui.min.js"></script>
+<script type="text/javascript" src="/comm/plugin/captcha/jquery.captcha.js"></script>
+<script type="text/javascript" src="/comm/js/swiper.jquery.min.js"></script>
+<script type="text/javascript" src="/comm/plugin/layui/lay/modules/layer.js"></script>
+<script type="text/javascript" src="/comm/plugin/layui/layui.js"></script>
+<script type="text/javascript" src="/comm/js/css_style.js"></script>
+
+<script type="text/javascript" src="/comm/tju/js/login_tju.js?v=2024060604"></script>
+
+<script type="text/javascript">
+
+    // 密码强度提醒
+    console.log('');
+    var remind_strong_pwd = '';
+    var redirect_url = 'null';
+    if (remind_strong_pwd === 'true') {
+        layer.confirm('您录入的密码属于弱密码，请及时修改。密码修改完成后，将不再弹窗提醒。', {
+            title:"密码强度提醒",
+            icon: 0,
+            closeBtn: 0,
+            time: 0, //不自动关闭
+            btn: ['修改', '跳过']
+        }, function(){
+            // 修改的回调
+            window.location.href = 'pwd';
+        }, function() {
+            // 跳过的回调
+            window.location.href = redirect_url;
+        });
+    }
+</script>
+
+<script id='scanLogin' type="text/html">
+
+        <div class="qrcode-login-box">
+            <div class="qrcode-box" style="width:200px;height:200px;"><img src="/bing_generated_qrcode.png" width="200" height="200"></div>
+                </div>
+        </div>
+        
+        <div class="qrcode-login-info">请打开融合门户App扫码登录</div>
+        <div class="qrcode-login-info-2" style="font-size: 14px;line-height: 24px; color: #fff;padding: 10px 0 0;">重要提醒：为了满足国家网络安全要求，本系统近期进行了升级。升级后，校编人员的原有账户密码保持不变，可继续使用；新入职人员需要先激活账户后使用；非校编人员，包括劳务派遣人员、外聘教师等，需本部门或业务部门申请后，由本人激活使用。</div>
+</script>
+
+
+   <script>
+   
+   
+   
+        function changeTab(index) {
+            var contents = document.getElementsByClassName('content');
+            var tabs = document.getElementsByClassName('tab-item');
+            for (var i = 0; i < contents.length; i++) {
+                tabs[i].classList.remove('active');
+                contents[i].classList.remove('active');
+            }
+            tabs[index].classList.add('active');
+            contents[index].classList.add('active');
+        }
+        setTimeout(function(){
+        	$(".code-box").removeClass("block1");
+            $(".qr-code-box").css("inset","")
+        },10000)
+        
+      //  var button = document.getElementById('white_click');
+        
+     // 定义点击事件的处理函数
+      /*   function handleClick() {
+           
+            $(".function-box").addClass("block1");
+        } 
+      */
+       $("#topcontrol").css("bottom",64);
+        
+        $(".white").click(function () {
+            $(".code-box").addClass("block1");
+        });
+        $(".minimize").click(function () {
+            $(".code-box").removeClass("block1");
+            $(".qr-code-box").css("inset","")
+            
+        });
+        $(".close1").click(function () {
+            $(".white").addClass("none");
+            $(".code-box").removeClass("block1");
+            $(".function-box").removeClass("block1");
+        });
+
+
+        
+        $(".white").mouseenter(function () {
+            $(".function-box").addClass("block1");
+        });
+
+        $(".white").mouseleave(function () {
+            $(".function-box").addClass("block1");
+
+            setTimeout(function () {
+                $(".function-box").removeClass("block1");
+            }, 5000); // Delay of 3000 milliseconds (3 seconds)
+        });
+        $(document).ready(function() {
+            $(".qr-code-box").draggable({
+            	containment:".page-content"
+            });
+          }); 
+    </script>
+</html>
